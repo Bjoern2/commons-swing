@@ -15,7 +15,7 @@
  */
 package com.googlecode.commons.swing.resources;
 
-public class DefaultI18N extends I18N {
+public class DefaultI18N extends AbstractI18N {
 
 	private static DefaultI18N instance;
 	

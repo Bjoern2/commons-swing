@@ -18,7 +18,7 @@ package com.googlecode.commons.swing.binding;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.beanutils.BeanMap;
+import com.googlecode.commons.swing.util.BeanUtils;
 
 public class Bindings<M> {
 
@@ -31,21 +31,18 @@ public class Bindings<M> {
 
 	public void bind(M model) {
 		this.model = model;
-		final BeanMap map = new BeanMap(model);
 		for (Binding b : bindings) {
-			Object value = map.get(b.getBeanPropertyName());
+		    Object value = BeanUtils.getProperty(model, b.getBeanPropertyName());
 			b.getValueSetter().setValue(b.getComponent(), value);
 		}
 	}
 	
 	public M getModel() {
-		BeanMap map = new BeanMap(model);
 		for (Binding b : bindings) {
 			Object value = b.getValueGetter().getValue(b.getComponent());
-			map.put(b.getBeanPropertyName(), value);
+			BeanUtils.setProperty(model, b.getBeanPropertyName(), value);
 		}
-		return (M)map.getBean();
-		
+		return model;
 	}
 	
 }
