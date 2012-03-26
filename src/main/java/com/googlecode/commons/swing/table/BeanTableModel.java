@@ -14,7 +14,7 @@ public class BeanTableModel<T> extends AbstractTableModel {
 	private static final long serialVersionUID = -1409685116749001861L;
 	
 	protected final List<T> data = new ArrayList<T>();
-	protected List<ColumnConfig> columns;	
+	protected List<ColumnConfig> columns;
 	
 	public BeanTableModel(List<ColumnConfig> columns) {
 		super();
@@ -28,7 +28,9 @@ public class BeanTableModel<T> extends AbstractTableModel {
 
 	public void setData(List<T> data) {
 		this.data.clear();
-		this.data.addAll(data);
+		if (data != null) {
+		    this.data.addAll(data);
+		}
 		fireTableDataChanged();
 	}
 
