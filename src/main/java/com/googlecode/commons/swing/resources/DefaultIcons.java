@@ -36,6 +36,14 @@ public class DefaultIcons extends Resources {
 		return getImageIcon("exclamation.png");
 	}
 	
+	public static ImageIcon resultset_next() {
+		return getImageIcon("resultset_next.png");
+	}
+	
+	public static ImageIcon resultset_previous() {
+		return getImageIcon("resultset_previous.png");
+	}
+	
 	public static ImageIcon getImageIcon(String name) {
 		return getInstance().loadImageIcon(name);
 	}

@@ -1,81 +1,109 @@
 package com.googlecode.commons.swing.component.datetime;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.JPopupMenu;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 public class JDateTimeField extends JFormattedTextField {
 
     private static final long serialVersionUID = 1787915955297704574L;
 
-    private JButton arrowButton;
+//    private JButton arrowButton;
+    
+    private JPopupMenu popup;
+    private MiniDateCalendar calendar;
 
     public JDateTimeField() {
         super(new SimpleDateFormat("dd.MM.yyyy"));
-
-        setLayout(new MyLayoutManager());
-        arrowButton = new BasicArrowButton(BasicArrowButton.SOUTH, UIManager.getColor("ComboBox.buttonBackground"), UIManager.getColor("ComboBox.buttonShadow"), UIManager.getColor("ComboBox.buttonDarkShadow"), UIManager.getColor("ComboBox.buttonHighlight"));
-        arrowButton.setName("ComboBox.arrowButton");
-        add(arrowButton);
+//
+//        setLayout(new MyLayoutManager());
+//        arrowButton = new BasicArrowButton(BasicArrowButton.SOUTH, UIManager.getColor("ComboBox.buttonBackground"), UIManager.getColor("ComboBox.buttonShadow"), UIManager.getColor("ComboBox.buttonDarkShadow"), UIManager.getColor("ComboBox.buttonHighlight"));
+//        arrowButton.setName("ComboBox.arrowButton");
+//        add(arrowButton);
+        
+        popup = new JPopupMenu();
+        popup.setFocusable(false);
+        calendar = new MiniDateCalendar();
+        calendar.setFocusable(false);
+        calendar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//popup.setVisible(false);
+				JDateTimeField.this.setValue(calendar.getValue());
+			}
+		});
+        popup.add(calendar);
+        
+        addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				onFocus();
+			}
+		});
+        addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				onFocus();
+			}
+		});
+        
+        addCaretListener(new CaretListener() {
+			
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				onFocus();				
+			}
+		});
 
     }
-
-    protected class MyLayoutManager implements LayoutManager {
-        // This layout manager handles the 'standard' layout of combo boxes.
-        // It puts the arrow button to the right and the editor to the left.
-        // If there is no editor it still keeps the arrow button to the right.
-        public void addLayoutComponent(String name, Component comp) {
-        }
-
-        public void removeLayoutComponent(Component comp) {
-        }
-
-        public Dimension preferredLayoutSize(Container parent) {
-            return parent.getPreferredSize();
-        }
-
-        public Dimension minimumLayoutSize(Container parent) {
-            return parent.getMinimumSize();
-        }
-
-        public void layoutContainer(Container parent) {
-            boolean squareButton = true;
-            
-            JDateTimeField cb = (JDateTimeField) parent;
-            int width = cb.getWidth();
-            int height = cb.getHeight();
-
-            Insets insets = getInsets();
-            int buttonHeight = height - (insets.top + insets.bottom);
-            int buttonWidth = buttonHeight;
-            if (arrowButton != null) {
-                Insets arrowInsets = arrowButton.getInsets();
-                buttonWidth = squareButton ? buttonHeight : arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-            }
-            Rectangle cvb;
-
-            if (arrowButton != null) {
-                if (cb.getComponentOrientation().isLeftToRight()) {
-                    arrowButton.setBounds(width - (insets.right + buttonWidth), insets.top, buttonWidth, buttonHeight);
-                } else {
-                    arrowButton.setBounds(insets.left, insets.top, buttonWidth, buttonHeight);
-                }
-            }
-//            if (editor != null) {
-//                cvb = rectangleForCurrentValue();
-//                editor.setBounds(cvb);
-//            }
-        }
+    
+    protected void onFocus() {
+		popup.show(JDateTimeField.this, 0, 18);
+		JDateTimeField.this.requestFocus();
     }
+
+	@Override
+	public void commitEdit() throws ParseException {
+		// TODO Auto-generated method stub
+		super.commitEdit();
+		
+		if (isValid()) {
+			calendar.setValue((Date)getValue());
+		}
+	}
+
 
 }

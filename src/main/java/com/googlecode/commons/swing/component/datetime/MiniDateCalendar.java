@@ -2,6 +2,7 @@ package com.googlecode.commons.swing.component.datetime;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormatSymbols;
@@ -16,15 +17,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
+import com.googlecode.commons.swing.resources.DefaultIcons;
 import com.googlecode.commons.swing.util.DateUtils2;
+import com.googlecode.commons.swing.util.SizeUtils;
 
 public class MiniDateCalendar extends JPanel {
 
@@ -40,6 +45,7 @@ public class MiniDateCalendar extends JPanel {
     private List<DayButton> days = new ArrayList<DayButton>();
 
     private Date value = new Date();
+    private Date selectedMonth = (Date)value.clone();
 
     public MiniDateCalendar() {
         super();
@@ -48,11 +54,17 @@ public class MiniDateCalendar extends JPanel {
     
     private void init() {
         setLayout(new BorderLayout());
+        SizeUtils.setAllWidths(this, 150);
+        SizeUtils.setAllHeights(this, 180);
         
         panNorth = new JPanel(new BorderLayout());
         add(panNorth, BorderLayout.NORTH);
         
-        btnPrev = new JButton("<");
+        btnPrev = new JButton();
+        SizeUtils.setAllWidths(btnPrev, 18);
+        SizeUtils.setAllHeights(btnPrev, 18);
+        btnPrev.setIcon(DefaultIcons.resultset_previous());
+        btnPrev.setMargin(new Insets(0, 0, 0, 0));
         btnPrev.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,10 +74,16 @@ public class MiniDateCalendar extends JPanel {
         panNorth.add(btnPrev, BorderLayout.WEST);
         
         lblMonth = new JLabel();
+        SizeUtils.setMinHeight(lblMonth, 0);
+        SizeUtils.setPreferredHeight(lblMonth, 0);
         lblMonth.setHorizontalAlignment(SwingConstants.CENTER);
         panNorth.add(lblMonth, BorderLayout.CENTER);
         
-        btnNext = new JButton(">");
+        btnNext = new JButton();
+        btnNext.setIcon(DefaultIcons.resultset_next());
+        SizeUtils.setAllWidths(btnNext, 18);
+        SizeUtils.setAllHeights(btnNext, 18);
+        btnNext.setMargin(new Insets(0, 0, 0, 0));
         btnNext.addActionListener(new ActionListener() {
             
             @Override
@@ -89,9 +107,11 @@ public class MiniDateCalendar extends JPanel {
             panCenter.add(lblDay);
         }
 
+        ButtonGroup grp = new ButtonGroup();
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
                 final DayButton btn = new DayButton();
+                btn.setMargin(new Insets(0, 0, 0, 0));
                 btn.weekdayName = weekdays[col];
                 btn.weekdayNumber = col;
                 btn.addActionListener(new ActionListener() {
@@ -101,6 +121,7 @@ public class MiniDateCalendar extends JPanel {
                     }
                 });
                 days.add(btn);
+                grp.add(btn);
                 panCenter.add(btn);
             }
         }
@@ -140,11 +161,13 @@ public class MiniDateCalendar extends JPanel {
 //            if (DateUtils2.getWeekNumber(i))
 //        }
         
+        
         for (DayButton btn : days) {
             btn.setText("");
             btn.setEnabled(false);
 //            btn.setBorder(new LineBorder());
             btn.value = null;
+            btn.setSelected(false);
         }
         
         int startWeekday = DateUtils2.getWeekNumber(startOfMonth);
@@ -153,6 +176,9 @@ public class MiniDateCalendar extends JPanel {
             btn.setText(nfDay.format(i + 1));
             btn.value = DateUtils.setDays(startOfMonth, i + 1);
             btn.setEnabled(true);
+            if (DateUtils.isSameDay(btn.value, this.value)) {
+            	btn.setSelected(true);
+            }
         }
 
     }
@@ -163,9 +189,14 @@ public class MiniDateCalendar extends JPanel {
         }
         return value;
     }
+    
+    public void setValue(Date value) {
+    	this.value = value;
+    	refresh();
+    }
 
     
-    public class DayButton extends JButton {
+    public class DayButton extends JToggleButton {
 
         private static final long serialVersionUID = -6099662047444463605L;
         
