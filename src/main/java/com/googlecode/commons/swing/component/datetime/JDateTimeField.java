@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JPopupMenu;
@@ -76,7 +77,11 @@ public class JDateTimeField extends JFormattedTextField {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				onFocus();
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					popup.setVisible(false);
+				} else {
+					onFocus();
+				}
 			}
 		});
         
