@@ -6,6 +6,21 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Commons Swing</name>
 
+	<dependencyManagement>
+		<dependencies>
+		</dependencies>
+	</dependencyManagement>
+	<distributionManagement>
+		<repository>
+			<id>repo</id>
+			<url>http://repo.commons-swing.googlecode.com/git/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshot-repo</id>
+			<url>http://repo.commons-swing.googlecode.com/git/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
