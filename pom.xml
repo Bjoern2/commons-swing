@@ -5,6 +5,19 @@
 	<artifactId>commons-swing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Commons Swing</name>
+	<url>http://code.google.com/p/commons-swing/</url>
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://commons-swing.ci.cloudbees.com</url>
+	</ciManagement>
 
 	<dependencyManagement>
 		<dependencies>
@@ -37,20 +50,19 @@
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
 		</dependency>
-
 	</dependencies>
-   
-  <build>
-    <plugins>
-       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.6</source>
-            <target>1.6</target>
-          </configuration>
-       </plugin>
-    </plugins>
-   </build>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
