@@ -18,6 +18,9 @@ package com.googlecode.commons.swing.layout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class GridBagFactory {
 
 	protected int column = 0;
@@ -111,6 +114,11 @@ public class GridBagFactory {
 		return this;
 	}
 	
+	public GridBagFactory setColumn(int col) {
+	    this.column = col;
+	    return this;
+	}
+	
 	public GridBagFactory resetColumn() {
 		column = 0;
 		return this;
@@ -122,6 +130,11 @@ public class GridBagFactory {
 			rowCount = (row + 1);
 		}
 		return this;
+	}
+	
+	public GridBagFactory setRow(int row) {
+	    this.row = row;
+	    return this;
 	}
 	
 	public GridBagFactory resetRow() {
@@ -156,6 +169,16 @@ public class GridBagFactory {
 		this.insets = insets;
 		return this;
 	}
+	
+	public GridBagFactory setInsetRight(int right) {
+	    this.insets.right = right;
+	    return this;
+	}
+	
+	public GridBagFactory setInsetBottom(int bottom) {
+        this.insets.bottom = bottom;
+        return this;
+    }
 
 	public Anchor getAnchor() {
 		return anchor;
@@ -198,10 +221,19 @@ public class GridBagFactory {
 		return this;
 	}
 
+	/**
+	 * See {@link GridBagConstraints#gridwidth}
+	 * @return
+	 */
 	public int getRowSpan() {
 		return rowSpan;
 	}
 
+	/**
+	 * See {@link GridBagConstraints#gridwidth}
+	 * @param rowSpan
+	 * @return
+	 */
 	public GridBagFactory setRowSpan(int rowSpan) {
 		this.rowSpan = rowSpan;
 		return this;
@@ -219,5 +251,10 @@ public class GridBagFactory {
 	public int getColumnCount() {
 		return columnCount;
 	}
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
 	
 }

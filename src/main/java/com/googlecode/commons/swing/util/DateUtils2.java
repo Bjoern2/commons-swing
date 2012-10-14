@@ -43,6 +43,13 @@ public final class DateUtils2 {
         return end;
     }
     
+    public static int getDaysOfMonth(Date date) {
+        Date endOfMonth = getEndOfMonth(date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(endOfMonth);
+        return cal.get(Calendar.DAY_OF_MONTH);
+    }
+    
     public static String getShortWeekday(Date d) {
         return DateFormatUtils.format(d, "EEE");
     }
